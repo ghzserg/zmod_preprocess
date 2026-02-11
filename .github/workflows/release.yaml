@@ -1,0 +1,57 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin, windows]
+        goarch: [amd64]
+        include:
+          - goos: darwin
+            goarch: arm64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+
+      - name: Build
+        run: |
+          export BINARY_NAME="${{ github.event.repository.name }}-${{ matrix.goos }}-${{ matrix.goarch }}"
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            export BINARY_NAME="$BINARY_NAME.exe"
+          fi
+          cd go
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o "$BINARY_NAME" .
+
+      # Загружаем бинарник в любом случае
+      - name: Upload binary to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: go/${{ github.event.repository.name }}-${{ matrix.goos }}-${{ matrix.goarch }}*
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Загружаем скрипты только для первого варианта в матрице
+      - name: Upload scripts to Release
+        if: matrix.goos == 'linux' && matrix.goarch == 'amd64'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: zmod-preprocess.*
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
