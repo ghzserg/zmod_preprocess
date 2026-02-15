@@ -42,10 +42,11 @@ for line_raw in content:
     if len(line) == 0:
         continue
     if line[0] == 't':
+        main_part = line.split(';', 1)[0].split(' ', 1)[0].strip()
         try:
-            index = int(line[1:])
+            index = int(main_part[1:])
             if index not in result_colors:
-               result_colors += [index]
+                result_colors += [index]
             highest_result_color = max(highest_result_color, index)
         except:
             pass
@@ -68,8 +69,8 @@ if filament_types[0] == '':
     filament_types = []
 
 if len(result_colors) == 0:
-  result_colors = [0]
-  highest_result_color = 0
+    result_colors = [0]
+    highest_result_color = 0
 
 if len(filament_colors) <= highest_result_color:
     filament_colors += [''] * (highest_result_color + 1 - len(filament_colors))
