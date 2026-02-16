@@ -84,7 +84,7 @@ filament_type_string = ','.join(filament_types)
 
 if not found_header_end_line:
     header_end_line = 0
-    
+
 content.insert(header_end_line, f"; zmod_color_data = {tool_indexes_string}|{filament_color_string}|{filament_type_string}\r\n")
 
 if found_existing_line:

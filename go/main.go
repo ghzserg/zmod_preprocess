@@ -70,12 +70,23 @@ func main() {
 
 		// Поиск команд вида T0, T1 и т.д.
 		if strings.HasPrefix(line, "t") {
-			if idx, err := strconv.Atoi(line[1:]); err == nil {
-				resultColors[idx] = true
-				if idx > highestResultColor {
-					highestResultColor = idx
-				}
-			}
+		    // Делим строку на части до комментария
+		    parts := strings.SplitN(line, ";", 2)
+		    mainPart := parts[0]
+
+		    // Делим на части до пробела или других символов
+		    mainParts := strings.SplitN(mainPart, " ", 2)
+		    toolCommand := strings.TrimSpace(mainParts[0])
+
+		    // Проверяем, что это действительно команда T с числом
+		    if len(toolCommand) > 1 && toolCommand[0] == 't' {
+		        if idx, err := strconv.Atoi(toolCommand[1:]); err == nil {
+		            resultColors[idx] = true
+		            if idx > highestResultColor {
+		                highestResultColor = idx
+		            }
+		        }
+		    }
 		}
 
 		// Извлечение данных о цвете и типе филамента
