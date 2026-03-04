@@ -1,7 +1,7 @@
 To add these profiles to OrcaSlicer:
-- You must first add the stock AD5X profiles in OrcaSlicer.
-- You can either manually place these profiles in OrcaSlicer's profiles directory.
-- Or you can add them to a ZIP file, then import the ZIP via File -> Import -> Import Configs.
+- You must first add the stock AD5X profiles in OrcaSlicer (you must add every nozzle size you wish to use).
+- Then you can import them via File -> Import -> Import Configs.
+- You can continue using your existing material and print process profiles.
 
 Differences from stock AD5X profiles:
 - Fan speed-up time set to 1.5s

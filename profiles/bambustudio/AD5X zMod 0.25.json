@@ -1,0 +1,256 @@
+{
+    "apply_top_surface_compensation": "0",
+    "auxiliary_fan": "1",
+    "bed_custom_model": "/app/share/BambuStudio/profiles/Creality/creality_k1_buildplate_model.stl",
+    "bed_custom_texture": "",
+    "bed_exclude_area": [
+        "0x0"
+    ],
+    "bed_temperature_formula": "by_first_filament",
+    "before_layer_change_gcode": "",
+    "best_object_pos": "0.5,0.5",
+    "change_filament_gcode": "SET_VELOCITY_LIMIT ACCEL=[travel_acceleration]\nG1 X{x_after_toolchange} Y{y_after_toolchange} F18000\nG1 Z{z_after_toolchange}\nT[next_extruder]\n_GOTO_TRASH\n{if flush_length > 0}\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n_DISABLE_SENSOR\n; FLUSH_START\n{if flush_length_1 == 0}\nG1 E2 F{old_filament_e_feedrate / 2}\nG1 E{flush_length + old_retract_length_toolchange - 2} F{old_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{old_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{else}\nG1 E2 F{old_filament_e_feedrate / 2}\nG1 E{flush_length_1 + old_retract_length_toolchange - 2} F{old_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{old_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{if flush_length_2 > 0}\n_GOTO_TRASH\nG1 E2 F{old_filament_e_feedrate / 2}\nG1 E{flush_length_2 - 1} F{old_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{old_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{endif}\n{if flush_length_3 > 0}\n_GOTO_TRASH\nG1 E2 F{old_filament_e_feedrate / 2}\nG1 E{flush_length_3 - 1} F{old_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{old_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{endif}\n{if flush_length_4 > 0}\n_GOTO_TRASH\nG1 E2 F{old_filament_e_feedrate / 2}\nG1 E{flush_length_4 - 1} F{old_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{old_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{endif}\n{endif}\n{if 1 - old_retract_length_toolchange < -2}\nG1 E-2 F{old_filament_e_feedrate / 2}\nG1 E{1 - old_retract_length_toolchange + 2} F{old_filament_e_feedrate}\n{endif}\n{if 1 - old_retract_length_toolchange >= -2 and 1 - old_retract_length_toolchange < 0}\nG1 E{1 - old_retract_length_toolchange} F{old_filament_e_feedrate / 2}\n{endif}\n{if 1 - old_retract_length_toolchange > 0 and 1 - old_retract_length_toolchange <= 2}\nG1 E{1 - old_retract_length_toolchange} F{old_filament_e_feedrate / 2}\n{endif}\n{if 1 - old_retract_length_toolchange > 2}\nG1 E2 F{old_filament_e_feedrate / 2}\nG1 E{1 - old_retract_length_toolchange - 2} F{old_filament_e_feedrate}\n{endif}\n; FLUSH_END\n_ENABLE_SENSOR\n{else}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\n_SBROS_TRASH\n{endif}\n{if layer_num < close_fan_the_first_x_layers[next_extruder]}\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{elsif layer_num >= full_fan_speed_layer[next_extruder] - 1}\nSET_FAN_SPEED FAN=fanM106 SPEED={ fan_min_speed[next_extruder] / 100}\n{else}\nSET_FAN_SPEED FAN=fanM106 SPEED={ fan_min_speed[next_extruder] * (layer_num - close_fan_the_first_x_layers[next_extruder] + 1) / (full_fan_speed_layer[next_extruder] - close_fan_the_first_x_layers[next_extruder]) / 100}\n{endif}\nG1 X{x_after_toolchange} Y{y_after_toolchange} F18000\nG1 Z{z_after_toolchange}",
+    "cooling_filter_enabled": "0",
+    "default_filament_profile": [
+        "Generic PLA @Creality"
+    ],
+    "default_nozzle_volume_type": [
+        "Standard"
+    ],
+    "default_print_profile": "0.20mm Standard @Creality K1 0.4 nozzle",
+    "deretraction_speed": [
+        "45"
+    ],
+    "enable_long_retraction_when_cut": "0",
+    "enable_pre_heating": "0",
+    "extruder_clearance_dist_to_rod": "29",
+    "extruder_clearance_height_to_lid": "130",
+    "extruder_clearance_height_to_rod": "26",
+    "extruder_clearance_max_radius": "58",
+    "extruder_colour": [
+        "#FCE94F"
+    ],
+    "extruder_max_nozzle_count": [
+        "1"
+    ],
+    "extruder_offset": [
+        "0x0"
+    ],
+    "extruder_printable_area": [],
+    "extruder_printable_height": [
+        "0"
+    ],
+    "extruder_type": [
+        "Direct Drive"
+    ],
+    "extruder_variant_list": [
+        "Direct Drive Standard"
+    ],
+    "fan_direction": "undefine",
+    "from": "User",
+    "gcode_flavor": "klipper",
+    "grab_length": [
+        "0"
+    ],
+    "group_algo_with_time": "0",
+    "head_wrap_detect_zone": [],
+    "host_type": "octoprint",
+    "hotend_cooling_rate": [
+        "2"
+    ],
+    "hotend_heating_rate": [
+        "2"
+    ],
+    "inherits": "Creality K1 0.4 nozzle",
+    "layer_change_gcode": ";AFTER_LAYER_CHANGE\n;[layer_z]\nSET_PRINT_STATS_INFO CURRENT_LAYER={layer_num + 1}",
+    "long_retractions_when_cut": [
+        "0"
+    ],
+    "machine_end_gcode": "END_PRINT",
+    "machine_hotend_change_time": "0",
+    "machine_load_filament_time": "66",
+    "machine_max_acceleration_e": [
+        "5000",
+        "5000"
+    ],
+    "machine_max_acceleration_extruding": [
+        "20000",
+        "20000"
+    ],
+    "machine_max_acceleration_retracting": [
+        "5000",
+        "5000"
+    ],
+    "machine_max_acceleration_travel": [
+        "9000",
+        "9000"
+    ],
+    "machine_max_acceleration_x": [
+        "20000",
+        "20000"
+    ],
+    "machine_max_acceleration_y": [
+        "20000",
+        "20000"
+    ],
+    "machine_max_acceleration_z": [
+        "500",
+        "500"
+    ],
+    "machine_max_jerk_e": [
+        "2.5",
+        "2.5"
+    ],
+    "machine_max_jerk_x": [
+        "9",
+        "5"
+    ],
+    "machine_max_jerk_y": [
+        "9",
+        "5"
+    ],
+    "machine_max_jerk_z": [
+        "3",
+        "2"
+    ],
+    "machine_max_speed_e": [
+        "30",
+        "100"
+    ],
+    "machine_max_speed_x": [
+        "600",
+        "1000"
+    ],
+    "machine_max_speed_y": [
+        "600",
+        "1000"
+    ],
+    "machine_max_speed_z": [
+        "20",
+        "30"
+    ],
+    "machine_min_extruding_rate": [
+        "0",
+        "0"
+    ],
+    "machine_min_travel_rate": [
+        "0",
+        "0"
+    ],
+    "machine_pause_gcode": "PAUSE",
+    "machine_prepare_compensation_time": "260",
+    "machine_start_gcode": "SAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=2\nSTART_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]\nT{initial_no_support_extruder}\nM190 S[bed_temperature_initial_layer_single]\nM104 S[nozzle_temperature_initial_layer]\nSET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]",
+    "machine_switch_extruder_time": "0",
+    "machine_unload_filament_time": "0",
+    "master_extruder_id": "1",
+    "max_layer_height": [
+        "0.14"
+    ],
+    "min_layer_height": [
+        "0.08"
+    ],
+    "name": "AD5X zMod 0.25",
+    "nozzle_diameter": [
+        "0.25"
+    ],
+    "nozzle_flush_dataset": [
+        "0"
+    ],
+    "nozzle_height": "4",
+    "nozzle_type": [
+        "stainless_steel"
+    ],
+    "nozzle_volume": [
+        "144"
+    ],
+    "physical_extruder_map": [
+        "0"
+    ],
+    "printable_area": [
+        "0x0",
+        "220x0",
+        "220x220",
+        "0x220"
+    ],
+    "printable_height": "220",
+    "printer_extruder_id": [
+        "1"
+    ],
+    "printer_extruder_variant": [
+        "Direct Drive Standard"
+    ],
+    "printer_model": "Creality K1",
+    "printer_notes": "",
+    "printer_settings_id": "AD5X zMod 0.25",
+    "printer_structure": "corexy",
+    "printer_technology": "FFF",
+    "printer_variant": "0.4",
+    "printhost_authorization_type": "key",
+    "printhost_ssl_ignore_revoke": "0",
+    "printing_by_object_gcode": "",
+    "retract_before_wipe": [
+        "100%"
+    ],
+    "retract_length_toolchange": [
+        "1"
+    ],
+    "retract_lift_above": [
+        "0"
+    ],
+    "retract_lift_below": [
+        "250"
+    ],
+    "retract_restart_extra": [
+        "0"
+    ],
+    "retract_restart_extra_toolchange": [
+        "0"
+    ],
+    "retract_when_changing_layer": [
+        "1"
+    ],
+    "retraction_distances_when_cut": [
+        "18"
+    ],
+    "retraction_length": [
+        "1"
+    ],
+    "retraction_minimum_travel": [
+        "1"
+    ],
+    "retraction_speed": [
+        "45"
+    ],
+    "scan_first_layer": "0",
+    "silent_mode": "0",
+    "single_extruder_multi_material": "1",
+    "support_air_filtration": "0",
+    "support_chamber_temp_control": "0",
+    "support_cooling_filter": "0",
+    "support_object_skip_flush": "0",
+    "template_custom_gcode": "",
+    "thumbnail_size": [
+        "96x96",
+        "300x300"
+    ],
+    "time_lapse_gcode": "",
+    "upward_compatible_machine": [],
+    "use_firmware_retraction": "0",
+    "use_relative_e_distances": "1",
+    "version": "2.0.0.2",
+    "wipe": [
+        "1"
+    ],
+    "wipe_distance": [
+        "2"
+    ],
+    "wrapping_detection_gcode": "",
+    "wrapping_detection_layers": "20",
+    "wrapping_exclude_area": [],
+    "z_hop": [
+        "0.3"
+    ],
+    "z_hop_types": [
+        "Normal Lift"
+    ]
+}
