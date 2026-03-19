@@ -201,7 +201,7 @@
     "printhost_authorization_type": "key",
     "printhost_ssl_ignore_revoke": "0",
     "printing_by_object_gcode": "",
-    "purge_in_prime_tower": "0",
+    "purge_in_prime_tower": "1",
     "resonance_avoidance": "0",
     "retract_before_wipe": [
         "100%"
