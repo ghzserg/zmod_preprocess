@@ -144,7 +144,8 @@
         "0"
     ],
     "machine_pause_gcode": "PAUSE",
-    "machine_start_gcode": "RESPOND MSG=\"Pre-Processing purge mode results:\"\n{if purge_in_prime_tower && print_sequence == \"by layer\"}\nRESPOND MSG=\"Purge in prime tower option enabled. Using 'nopoop' mode.\"\nSAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=0\n{else}\nRESPOND MSG=\"Purge in prime tower disabled or print 'by object' detected. Using 'slicer-controlled' poop mode.\"\nSAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=2\n{endif}\nSTART_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]\nSET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]",    "machine_tool_change_time": "0",
+    "machine_start_gcode": "RESPOND MSG=\"Pre-Processing purge mode results:\"\n{if purge_in_prime_tower && print_sequence == \"by layer\"}\nRESPOND MSG=\"Purge in prime tower option enabled. Using 'nopoop' mode.\"\nSAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=0\n{else}\nRESPOND MSG=\"Purge in prime tower disabled or print 'by object' detected. Using 'slicer-controlled' poop mode.\"\nSAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=2\n{endif}\nSTART_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]\nSET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]",
+    "machine_tool_change_time": "0",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "master_extruder_id": "1",
@@ -192,7 +193,8 @@
         "Direct Drive Standard"
     ],
     "printer_model": "Flashforge AD5X",
-    "printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nIf doing an print by ojbect plate, 'slicer-controlled' poop mode will be automatically used.\n\nAfter using poop mode with this profile make sure to set your zMod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",    "printer_settings_id": "AD5X Nopoop .6",
+    "printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nIf doing an print by ojbect plate, 'slicer-controlled' poop mode will be automatically used.\n\nAfter using poop mode with this profile make sure to set your zMod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
+    "printer_settings_id": "AD5X Nopoop .6",
     "printer_structure": "undefine",
     "printer_technology": "FFF",
     "printer_variant": "0.6",
