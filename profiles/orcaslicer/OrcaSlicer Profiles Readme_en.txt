@@ -13,9 +13,12 @@ Differences from stock AD5X profiles:
 - Filament load time set to 66s, unload time set to 0
 - Z-hop type set to normal
 
-Start and filament change gcodes are set up to support both USE_TRASH_ON_PRINT=0 (nopoop mode) and
-USE_TRASH_ON_PRINT=2 (slicer-controlled poop mode). To switch to slicer-controlled poop mode, disable
-the "Purge in prime tower" setting.
+
+Start and filament change gcodes are set up to support USE_TRASH_ON_PRINT=0 (nopoop mode) 
+and USE_TRASH_ON_PRINT=2 (slicer-controlled poop mode). 
+
+To switch to slicer-controlled poop mode, disable the "Purge in prime tower" setting in the printer
+Multimaterial settings. If the plate type is set to "By object", slicer-controlled be automatically used. 
 
 Make sure to set your USE_TRASH_ON_PRINT setting back to your intended value after using these profiles.
 You can disregard this if you will be using these profiles for all of your prints.
