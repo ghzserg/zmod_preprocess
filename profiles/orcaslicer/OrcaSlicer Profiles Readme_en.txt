@@ -24,11 +24,5 @@ Make sure to set your USE_TRASH_ON_PRINT setting back to your intended value aft
 You can disregard this if you will be using these profiles for all of your prints.
 
 ** A note on "Purge to infill", "Purge to object", etc: **
-These settings do not work correctly in poop mode (ie: Purge to prime tower disabled) due to a bug in
-OrcaSlicer. Although they will be "purged" to, the full amount of poop will also be produced. You can
-control poop volumes via Flush Volumes when using poop mode with these profiles, but you can only use
-the purge redirection options when printing in nopoop mode.
-
-As mentioned, this is due to a bug in OrcaSlicer itself, and is not something the profiles or zMod can
-fix. If OrcaSlicer fixes this bug in the future, you will be able to use those options without any new
-version of zMod or these profiles being required.
+If you want to use these options with slicer-controlled poop, you must change the prime tower type
+to type 1. You must turn "Purge to prime tower" off *BEFORE* changing the type.
