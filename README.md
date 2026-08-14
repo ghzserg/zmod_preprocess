@@ -19,6 +19,18 @@ Here are the options for adding:
 - ```"/home/user/zmod_preprocess-darwin-arm64";```
 - ```"/home/user/zmod_preprocess-linux-amd64";```
 
+## Simplifying object outlines
+
+The outline of every `EXCLUDE_OBJECT_DEFINE` is thinned out. To turn it off:
+
+- ```"/home/user/zmod_preprocess-linux-amd64" -no-simplify-objects;```
+- ```"/home/user/zmod-preprocess.py" -no-simplify-objects;```
+
+The slicer writes the full first-layer outline of every object. On a plate with many small parts this adds up to thousands of points, and parsing them stalls Klipper on the printer — the host event loop blocks and the board reports `Timer too close`.
+
+Points are dropped by Douglas-Peucker, tolerance in millimetres: `-simplify-objects=0.5`. Default is `0.2`, which keeps the part recognisable in the web interface; `-simplify-objects=0` replaces the outline with its bounding rectangle. The bounding box is preserved exactly at any tolerance, so KAMP and LINE_PURGE are unaffected.
+
+
 ## Использовались наработки
 - Igor Polunovskiy
 - [@asd2003ru](https://github.com/asd2003ru/addmd5/releases/)
@@ -44,4 +56,16 @@ Here are the options for adding:
 - ```"/home/user/zmod_preprocess-darwin-amd64";```
 - ```"/home/user/zmod_preprocess-darwin-arm64";```
 - ```"/home/user/zmod_preprocess-linux-amd64";```
+
+## Упрощение контуров объектов
+
+Контур каждого `EXCLUDE_OBJECT_DEFINE` прореживается. Чтобы отключить:
+
+- ```"/home/user/zmod_preprocess-linux-amd64" -no-simplify-objects;```
+- ```"/home/user/zmod-preprocess.py" -no-simplify-objects;```
+
+Слайсер пишет контур первого слоя целиком для каждого объекта. На плите из множества мелких деталей набираются тысячи точек, и их разбор подвешивает Klipper на принтере — цикл событий встаёт, плата отдаёт `Timer too close`.
+
+Точки отбрасываются методом Дугласа-Пекера, допуск задаётся в миллиметрах: `-simplify-objects=0.5`. По умолчанию `0.2` — деталь в вебморде остаётся узнаваемой; `-simplify-objects=0` заменяет контур габаритным прямоугольником. Габарит сохраняется точно при любом допуске, так что KAMP и LINE_PURGE не затрагиваются.
+
 
