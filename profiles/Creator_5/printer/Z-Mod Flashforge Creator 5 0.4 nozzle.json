@@ -355,7 +355,7 @@
 		"3"
 	],
 	"upward_compatible_machine": [],
-	"use_3mf": "0",
+	"use_3mf": "1",
 	"use_firmware_retraction": "0",
 	"use_relative_e_distances": "1",
 	"version": "2.4.0.4",

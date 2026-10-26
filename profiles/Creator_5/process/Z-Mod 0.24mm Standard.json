@@ -8,9 +8,6 @@
 	"inherits": "0.24mm Standard @FF C5",
 	"internal_bridge_flow": "0.98",
 	"name": "Z-Mod 0.24mm Standard",
-	"post_process": [
-		"\"c:\\zmod_preprocess-windows-amd64.exe\""
-	],
 	"precise_outer_wall": "1",
 	"prime_tower_brim_width": "-1",
 	"prime_tower_infill_gap": "165%",

@@ -7,9 +7,6 @@
 	"gcode_label_objects": "1",
 	"inherits": "0.20mm Standard @FF C5",
 	"name": "Z-Mod 0.20mm Standard",
-	"post_process": [
-		"\"c:\\zmod_preprocess-windows-amd64.exe\""
-	],
 	"prime_tower_brim_width": "-1",
 	"prime_tower_infill_gap": "165%",
 	"prime_tower_width": "35",
