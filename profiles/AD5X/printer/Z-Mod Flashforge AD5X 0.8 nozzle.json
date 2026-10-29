@@ -1,0 +1,355 @@
+{
+	"adaptive_bed_mesh_margin": "0",
+	"auxiliary_fan": "1",
+	"bbl_use_printhost": "0",
+	"bed_custom_model": "",
+	"bed_custom_texture": "",
+	"bed_exclude_area": [
+		"0x0"
+	],
+	"bed_exclude_volume_mode": "shared",
+	"bed_exclude_volumes": "",
+	"bed_mesh_max": "99999,99999",
+	"bed_mesh_min": "-99999,-99999",
+	"bed_mesh_probe_distance": "50,50",
+	"bed_temperature_formula": "by_highest_temp",
+	"before_layer_change_gcode": "SET_PRINT_STATS_INFO CURRENT_LAYER={layer_num + 1}\n",
+	"belt_frame_tilt_angle": "45",
+	"belt_frame_tilt_decouple": "0",
+	"belt_printer": "0",
+	"belt_printer_infinite_y": "1",
+	"belt_slice_rotation": "x",
+	"belt_slice_rotation_angle": "45",
+	"belt_support_floor_offset": "0",
+	"best_object_pos": "0.5,0.5",
+	"build_plate_tilt_x": "0",
+	"build_plate_tilt_y": "0",
+	"change_extrusion_role_gcode": "",
+	"change_filament_gcode": "",
+	"cooling_filter_enabled": "0",
+	"cooling_tube_length": "0",
+	"cooling_tube_retraction": "0",
+	"default_bed_type": "",
+	"default_filament_profile": [
+		"Generic PLA @Flashforge"
+	],
+	"default_nozzle_volume_type": [
+		"Standard"
+	],
+	"default_print_profile": "0.40mm Standard @Flashforge AD5M Pro 0.8 Nozzle",
+	"deretract_speed_extruder_change": [
+		"0"
+	],
+	"deretraction_speed": [
+		"35"
+	],
+	"disable_m73": "0",
+	"emit_machine_limits_to_gcode": "1",
+	"enable_belt_purge_tower": "0",
+	"enable_filament_ramming": "0",
+	"enable_long_retraction_when_cut": "0",
+	"enable_power_loss_recovery": "printer_configuration",
+	"enable_pre_heating": "0",
+	"extra_loading_move": "0",
+	"extruder_bed_exclude_volumes": [
+		""
+	],
+	"extruder_clearance_dist_to_rod": "40",
+	"extruder_clearance_height_to_lid": "130",
+	"extruder_clearance_height_to_rod": "26",
+	"extruder_clearance_radius": "58",
+	"extruder_colour": [
+		"#FCE94F"
+	],
+	"extruder_max_nozzle_count": [
+		"1"
+	],
+	"extruder_nozzle_stats": [
+		"Standard#1"
+	],
+	"extruder_offset": [
+		"0x0"
+	],
+	"extruder_printable_area": [],
+	"extruder_printable_height": [
+		"0"
+	],
+	"extruder_type": [
+		"Direct Drive"
+	],
+	"extruder_variant_list": [
+		"Direct Drive Standard"
+	],
+	"fan_direction": "undefine",
+	"fan_kickstart": "0",
+	"fan_speedup_overhangs": "1",
+	"fan_speedup_time": "0",
+	"farthest_point_timelapse": "0",
+	"file_start_gcode": "; estimated printing time (normal mode) = {print_time_day}d {print_time_hour}h {print_time_minute}m {print_time_sec}s",
+	"flashforge_serial_number": "",
+	"from": "User",
+	"gcode_flavor": "klipper",
+	"gcode_remap_x": "pos_x",
+	"gcode_remap_y": "pos_y",
+	"gcode_remap_z": "pos_z",
+	"gcode_skip_config_block": "0",
+	"grab_length": [
+		"0"
+	],
+	"group_algo_with_time": "0",
+	"head_wrap_detect_zone": [],
+	"high_current_on_filament_swap": "0",
+	"host_type": "octoprint",
+	"hotend_cooling_rate": [
+		"2"
+	],
+	"hotend_heating_rate": [
+		"2"
+	],
+	"imex_carriage_margin": "0",
+	"imex_firmware_managed_zones": "0",
+	"imex_gantry_count": "1",
+	"imex_mode_active_tools": [],
+	"imex_mode_gcodes": [],
+	"imex_mode_names": [],
+	"imex_nozzle_clearance_x": "30",
+	"imex_nozzle_clearance_y": "30",
+	"imex_tool_layout": "front-left",
+	"imex_tools_per_gantry": "2",
+	"imex_viz_theme": "standard",
+	"inherits": "Flashforge AD5X 0.8 nozzle",
+	"input_shaping_damp_x": "0.1",
+	"input_shaping_damp_y": "0.1",
+	"input_shaping_emit": "0",
+	"input_shaping_freq_x": "0",
+	"input_shaping_freq_y": "0",
+	"input_shaping_type": "Default",
+	"is_imex": "0",
+	"layer_change_gcode": ";AFTER_LAYER_CHANGE\n;[layer_z]",
+	"long_retractions_when_cut": [
+		"0"
+	],
+	"machine_bed_mass_Y": "0",
+	"machine_end_gcode": "END_PRINT\n",
+	"machine_hotend_change_time": "0",
+	"machine_load_filament_time": "50",
+	"machine_max_acceleration_e": [
+		"5000",
+		"5000"
+	],
+	"machine_max_acceleration_extruding": [
+		"20000",
+		"20000"
+	],
+	"machine_max_acceleration_retracting": [
+		"5000",
+		"5000"
+	],
+	"machine_max_acceleration_travel": [
+		"20000",
+		"20000"
+	],
+	"machine_max_acceleration_x": [
+		"20000",
+		"20000"
+	],
+	"machine_max_acceleration_y": [
+		"20000",
+		"20000"
+	],
+	"machine_max_acceleration_z": [
+		"500",
+		"500"
+	],
+	"machine_max_force_Y": "0",
+	"machine_max_jerk_e": [
+		"2.5",
+		"2.5"
+	],
+	"machine_max_jerk_x": [
+		"9",
+		"9"
+	],
+	"machine_max_jerk_y": [
+		"9",
+		"9"
+	],
+	"machine_max_jerk_z": [
+		"3",
+		"3"
+	],
+	"machine_max_junction_deviation": [
+		"0.01",
+		"0.01"
+	],
+	"machine_max_printed_mass": "0",
+	"machine_max_speed_e": [
+		"30",
+		"30"
+	],
+	"machine_max_speed_x": [
+		"600",
+		"600"
+	],
+	"machine_max_speed_y": [
+		"600",
+		"600"
+	],
+	"machine_max_speed_z": [
+		"20",
+		"20"
+	],
+	"machine_min_extruding_rate": [
+		"0",
+		"0"
+	],
+	"machine_min_travel_rate": [
+		"0",
+		"0"
+	],
+	"machine_pause_gcode": "M25",
+	"machine_prepare_compensation_time": "260",
+	"machine_start_gcode": "START_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]\nM190 S[bed_temperature_initial_layer_single]\nM104 S[nozzle_temperature_initial_layer] T{single_extruder_multi_material ? 0 : initial_extruder}\nSET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]\n",
+	"machine_tool_change_time": "0",
+	"machine_unload_filament_time": "50",
+	"manual_filament_change": "0",
+	"master_extruder_id": "1",
+	"max_layer_height": [
+		"0.56"
+	],
+	"max_resonance_avoidance_speed": "120",
+	"min_layer_height": [
+		"0.24"
+	],
+	"min_resonance_avoidance_speed": "70",
+	"name": "Z-Mod Flashforge AD5X 0.8 nozzle",
+	"nozzle_diameter": [
+		"0.8"
+	],
+	"nozzle_flush_dataset": [
+		"0"
+	],
+	"nozzle_height": "4",
+	"nozzle_hrc": "0",
+	"nozzle_type": [
+		"hardened_steel"
+	],
+	"nozzle_volume": [
+		"0"
+	],
+	"parallel_printheads_bed_exclude_areas": [],
+	"parallel_printheads_count": "1",
+	"parking_pos_retraction": "0",
+	"part_cooling_fan_min_pwm": "0",
+	"pellet_modded_printer": "0",
+	"physical_extruder_map": [
+		"0"
+	],
+	"preferred_orientation": "0",
+	"printable_area": [
+		"0x0",
+		"220x0",
+		"220x220",
+		"0x220"
+	],
+	"printable_height": "220",
+	"printer_agent": "",
+	"printer_extruder_id": [
+		"1"
+	],
+	"printer_extruder_variant": [
+		"Direct Drive Standard"
+	],
+	"printer_model": "Flashforge AD5X",
+	"printer_notes": "Z-Mod AD5X standart profile",
+	"printer_plugin_config_overrides": "",
+	"printer_settings_id": "Z-Mod Flashforge AD5X 0.8 nozzle",
+	"printer_structure": "undefine",
+	"printer_technology": "FFF",
+	"printer_variant": "0.8",
+	"printhost_authorization_type": "key",
+	"printhost_ssl_ignore_revoke": "0",
+	"printing_by_object_gcode": "",
+	"purge_in_prime_tower": "1",
+	"resonance_avoidance": "0",
+	"retract_after_wipe": [
+		"0%"
+	],
+	"retract_before_wipe": [
+		"100%"
+	],
+	"retract_length_toolchange": [
+		"3"
+	],
+	"retract_lift_above": [
+		"0"
+	],
+	"retract_lift_below": [
+		"0"
+	],
+	"retract_lift_enforce": [
+		"All Surfaces"
+	],
+	"retract_restart_extra": [
+		"0"
+	],
+	"retract_restart_extra_toolchange": [
+		"0"
+	],
+	"retract_when_changing_layer": [
+		"1"
+	],
+	"retraction_distances_when_cut": [
+		"18"
+	],
+	"retraction_length": [
+		"0.8"
+	],
+	"retraction_minimum_travel": [
+		"2"
+	],
+	"retraction_speed": [
+		"35"
+	],
+	"scan_first_layer": "0",
+	"single_extruder_multi_material": "1",
+	"support_air_filtration": "1",
+	"support_chamber_temp_control": "1",
+	"support_cooling_filter": "0",
+	"support_fast_purge_mode": "0",
+	"support_multi_bed_types": "1",
+	"support_object_skip_flush": "0",
+	"support_parallel_printheads": "0",
+	"template_custom_gcode": "",
+	"thumbnails": "140x110/PNG",
+	"thumbnails_format": "PNG",
+	"time_cost": "0",
+	"time_lapse_gcode": "TIMELAPSE_TAKE_FRAME",
+	"tool_change_on_wipe_tower": "0",
+	"travel_slope": [
+		"3"
+	],
+	"upward_compatible_machine": [],
+	"use_3mf": "1",
+	"use_firmware_retraction": "0",
+	"use_relative_e_distances": "1",
+	"version": "2.4.0.12",
+	"wait_for_temp_on_wipe_tower": "0",
+	"wipe": [
+		"1"
+	],
+	"wipe_distance": [
+		"2"
+	],
+	"wipe_tower_type": "type2",
+	"wrapping_detection_gcode": "",
+	"wrapping_detection_layers": "20",
+	"wrapping_exclude_area": [],
+	"z_hop": [
+		"0.4"
+	],
+	"z_hop_types": [
+		"Auto Lift"
+	],
+	"z_offset": "0"
+}
