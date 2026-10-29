@@ -18,7 +18,7 @@
     ],
     "default_print_profile": "0.20mm Standard @Creality K1 0.4 nozzle",
     "deretraction_speed": [
-        "45"
+        "35"
     ],
     "enable_long_retraction_when_cut": "0",
     "enable_pre_heating": "0",
@@ -113,7 +113,7 @@
         "2"
     ],
     "machine_max_speed_e": [
-        "30",
+        "35",
         "100"
     ],
     "machine_max_speed_x": [
@@ -143,14 +143,14 @@
     "machine_unload_filament_time": "0",
     "master_extruder_id": "1",
     "max_layer_height": [
-        "0.28"
+        "0.42"
     ],
     "min_layer_height": [
-        "0.08"
+        "0.15"
     ],
-    "name": "AD5X zMod 0.4",
+    "name": "AD5X Z-Mod 0.6",
     "nozzle_diameter": [
-        "0.4"
+        "0.6"
     ],
     "nozzle_flush_dataset": [
         "0"
@@ -181,7 +181,7 @@
     ],
     "printer_model": "Creality K1",
     "printer_notes": "",
-    "printer_settings_id": "AD5X zMod 0.4",
+    "printer_settings_id": "AD5X Z-Mod 0.6",
     "printer_structure": "corexy",
     "printer_technology": "FFF",
     "printer_variant": "0.4",
@@ -213,13 +213,13 @@
         "18"
     ],
     "retraction_length": [
-        "2"
+        "1.4"
     ],
     "retraction_minimum_travel": [
         "1"
     ],
     "retraction_speed": [
-        "45"
+        "35"
     ],
     "scan_first_layer": "0",
     "silent_mode": "0",

@@ -1,6 +1,6 @@
 {
     "auxiliary_fan": "1",
-    "bed_custom_model": "C:/Program Files/Bambu Studio/resources/profiles/Creality/creality_k1_buildplate_model.stl",
+    "bed_custom_model": "/app/share/BambuStudio/profiles/Creality/creality_k1_buildplate_model.stl",
     "bed_custom_texture": "",
     "bed_exclude_area": [
         "0x0"
@@ -18,7 +18,7 @@
     ],
     "default_print_profile": "0.20mm Standard @Creality K1 0.4 nozzle",
     "deretraction_speed": [
-        "35"
+        "45"
     ],
     "enable_long_retraction_when_cut": "0",
     "enable_pre_heating": "0",
@@ -113,7 +113,7 @@
         "2"
     ],
     "machine_max_speed_e": [
-        "35",
+        "30",
         "100"
     ],
     "machine_max_speed_x": [
@@ -143,14 +143,14 @@
     "machine_unload_filament_time": "0",
     "master_extruder_id": "1",
     "max_layer_height": [
-        "0.42"
+        "0.14"
     ],
     "min_layer_height": [
-        "0.15"
+        "0.08"
     ],
-    "name": "AD5X zMod 0.6",
+    "name": "AD5X Z-Mod 0.25",
     "nozzle_diameter": [
-        "0.6"
+        "0.25"
     ],
     "nozzle_flush_dataset": [
         "0"
@@ -181,7 +181,7 @@
     ],
     "printer_model": "Creality K1",
     "printer_notes": "",
-    "printer_settings_id": "AD5X zMod 0.6",
+    "printer_settings_id": "AD5X Z-Mod 0.25",
     "printer_structure": "corexy",
     "printer_technology": "FFF",
     "printer_variant": "0.4",
@@ -213,13 +213,13 @@
         "18"
     ],
     "retraction_length": [
-        "1.4"
+        "1"
     ],
     "retraction_minimum_travel": [
         "1"
     ],
     "retraction_speed": [
-        "35"
+        "45"
     ],
     "scan_first_layer": "0",
     "silent_mode": "0",
@@ -248,7 +248,7 @@
     "wrapping_detection_layers": "20",
     "wrapping_exclude_area": [],
     "z_hop": [
-        "0.4"
+        "0.3"
     ],
     "z_hop_types": [
         "Normal Lift"

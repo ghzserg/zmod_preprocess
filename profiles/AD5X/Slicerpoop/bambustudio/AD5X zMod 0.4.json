@@ -1,6 +1,6 @@
 {
     "auxiliary_fan": "1",
-    "bed_custom_model": "/app/share/BambuStudio/profiles/Creality/creality_k1_buildplate_model.stl",
+    "bed_custom_model": "C:/Program Files/Bambu Studio/resources/profiles/Creality/creality_k1_buildplate_model.stl",
     "bed_custom_texture": "",
     "bed_exclude_area": [
         "0x0"
@@ -143,14 +143,14 @@
     "machine_unload_filament_time": "0",
     "master_extruder_id": "1",
     "max_layer_height": [
-        "0.14"
+        "0.28"
     ],
     "min_layer_height": [
         "0.08"
     ],
-    "name": "AD5X zMod 0.25",
+    "name": "AD5X Z-Mod 0.4",
     "nozzle_diameter": [
-        "0.25"
+        "0.4"
     ],
     "nozzle_flush_dataset": [
         "0"
@@ -181,7 +181,7 @@
     ],
     "printer_model": "Creality K1",
     "printer_notes": "",
-    "printer_settings_id": "AD5X zMod 0.25",
+    "printer_settings_id": "AD5X Z-Mod 0.4",
     "printer_structure": "corexy",
     "printer_technology": "FFF",
     "printer_variant": "0.4",
@@ -213,7 +213,7 @@
         "18"
     ],
     "retraction_length": [
-        "1"
+        "2"
     ],
     "retraction_minimum_travel": [
         "1"
@@ -248,7 +248,7 @@
     "wrapping_detection_layers": "20",
     "wrapping_exclude_area": [],
     "z_hop": [
-        "0.3"
+        "0.4"
     ],
     "z_hop_types": [
         "Normal Lift"

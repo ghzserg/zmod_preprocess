@@ -8,7 +8,7 @@ To add these profiles to Bambu Studio:
 
 These are made to replicate the stock OrcaSlicer (not Orca-Flashforge) AD5X profiles as closely as possible,
 outside of a few intentional differences:
-- zMod start / end / layer change gcode in place
+- Z-Mod start / end / layer change gcode in place
 - Start gcode modified to automatically set USE_TRASH_ON_PRINT to 2
 - Filament change gcode added
 - Filament load time set to 66s, unload time set to 0

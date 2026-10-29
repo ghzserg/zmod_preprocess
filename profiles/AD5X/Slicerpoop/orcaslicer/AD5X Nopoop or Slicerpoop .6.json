@@ -261,7 +261,7 @@
 		"Direct Drive Standard"
 	],
 	"printer_model": "Flashforge AD5X",
-	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your zMod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
+	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your Z-Mod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
 	"printer_plugin_config_overrides": "",
 	"printer_settings_id": "AD5X Nopoop .6",
 	"printer_structure": "undefine",

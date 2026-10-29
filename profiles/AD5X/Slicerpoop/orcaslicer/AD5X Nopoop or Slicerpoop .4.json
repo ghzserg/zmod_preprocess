@@ -36,7 +36,7 @@
 	"default_nozzle_volume_type": [
 		"Standard"
 	],
-	"default_print_profile": "0.12mm Standard @Flashforge AD5M 0.25 Nozzle",
+	"default_print_profile": "0.20mm Standard @Flashforge AD5M Pro 0.4 Nozzle",
 	"deretract_speed_extruder_change": [
 		"0"
 	],
@@ -117,7 +117,7 @@
 	"imex_tool_layout": "front-left",
 	"imex_tools_per_gantry": "2",
 	"imex_viz_theme": "standard",
-	"inherits": "Flashforge AD5X 0.25 nozzle",
+	"inherits": "Flashforge AD5X 0.4 nozzle",
 	"input_shaping_damp_x": "0.1",
 	"input_shaping_damp_y": "0.1",
 	"input_shaping_emit": "0",
@@ -179,8 +179,8 @@
 		"3"
 	],
 	"machine_max_junction_deviation": [
-		"0.01",
-		"0.01"
+		"0",
+		"0"
 	],
 	"machine_max_printed_mass": "0",
 	"machine_max_speed_e": [
@@ -215,24 +215,24 @@
 	"manual_filament_change": "0",
 	"master_extruder_id": "1",
 	"max_layer_height": [
-		"0.14"
+		"0.28"
 	],
 	"max_resonance_avoidance_speed": "120",
 	"min_layer_height": [
 		"0.08"
 	],
 	"min_resonance_avoidance_speed": "70",
-	"name": "AD5X Nopoop .25",
+	"name": "AD5X Nopoop .4",
 	"nozzle_diameter": [
-		"0.25"
+		"0.4"
 	],
 	"nozzle_flush_dataset": [
 		"0"
 	],
-	"nozzle_height": "2.5",
+	"nozzle_height": "4",
 	"nozzle_hrc": "0",
 	"nozzle_type": [
-		"stainless_steel"
+		"hardened_steel"
 	],
 	"nozzle_volume": [
 		"144"
@@ -261,12 +261,12 @@
 		"Direct Drive Standard"
 	],
 	"printer_model": "Flashforge AD5X",
-	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your zMod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
+	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your Z-Mod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
 	"printer_plugin_config_overrides": "",
-	"printer_settings_id": "AD5X Nopoop .25",
+	"printer_settings_id": "AD5X Nopoop .4",
 	"printer_structure": "undefine",
 	"printer_technology": "FFF",
-	"printer_variant": "0.25",
+	"printer_variant": "0.4",
 	"printhost_authorization_type": "key",
 	"printhost_ssl_ignore_revoke": "0",
 	"printing_by_object_gcode": "",
@@ -303,7 +303,7 @@
 		"18"
 	],
 	"retraction_length": [
-		"1"
+		"2"
 	],
 	"retraction_minimum_travel": [
 		"1"
@@ -333,7 +333,7 @@
 	"use_3mf": "1",
 	"use_firmware_retraction": "0",
 	"use_relative_e_distances": "1",
-	"version": "2.3.2.40",
+	"version": "2.3.1.10",
 	"wait_for_temp_on_wipe_tower": "0",
 	"wipe": [
 		"1"
@@ -346,7 +346,7 @@
 	"wrapping_detection_layers": "20",
 	"wrapping_exclude_area": [],
 	"z_hop": [
-		"0.3"
+		"0.4"
 	],
 	"z_hop_types": [
 		"Normal Lift"

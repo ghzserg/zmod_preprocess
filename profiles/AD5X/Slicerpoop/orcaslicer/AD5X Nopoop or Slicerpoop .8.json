@@ -36,12 +36,12 @@
 	"default_nozzle_volume_type": [
 		"Standard"
 	],
-	"default_print_profile": "0.20mm Standard @Flashforge AD5M Pro 0.4 Nozzle",
+	"default_print_profile": "0.40mm Standard @Flashforge AD5M Pro 0.8 Nozzle",
 	"deretract_speed_extruder_change": [
 		"0"
 	],
 	"deretraction_speed": [
-		"45"
+		"35"
 	],
 	"disable_m73": "0",
 	"emit_machine_limits_to_gcode": "1",
@@ -82,7 +82,7 @@
 	],
 	"fan_direction": "undefine",
 	"fan_kickstart": "0.5",
-	"fan_speedup_overhangs": "0",
+	"fan_speedup_overhangs": "1",
 	"fan_speedup_time": "1.5",
 	"farthest_point_timelapse": "0",
 	"file_start_gcode": "; estimated printing time (normal mode) = {print_time_day}d {print_time_hour}h {print_time_minute}m {print_time_sec}s",
@@ -117,7 +117,7 @@
 	"imex_tool_layout": "front-left",
 	"imex_tools_per_gantry": "2",
 	"imex_viz_theme": "standard",
-	"inherits": "Flashforge AD5X 0.4 nozzle",
+	"inherits": "Flashforge AD5X 0.8 nozzle",
 	"input_shaping_damp_x": "0.1",
 	"input_shaping_damp_y": "0.1",
 	"input_shaping_emit": "0",
@@ -179,8 +179,8 @@
 		"3"
 	],
 	"machine_max_junction_deviation": [
-		"0",
-		"0"
+		"0.01",
+		"0.01"
 	],
 	"machine_max_printed_mass": "0",
 	"machine_max_speed_e": [
@@ -215,16 +215,16 @@
 	"manual_filament_change": "0",
 	"master_extruder_id": "1",
 	"max_layer_height": [
-		"0.28"
+		"0.56"
 	],
 	"max_resonance_avoidance_speed": "120",
 	"min_layer_height": [
-		"0.08"
+		"0.24"
 	],
 	"min_resonance_avoidance_speed": "70",
-	"name": "AD5X Nopoop .4",
+	"name": "AD5X Nopoop .8",
 	"nozzle_diameter": [
-		"0.4"
+		"0.8"
 	],
 	"nozzle_flush_dataset": [
 		"0"
@@ -261,12 +261,12 @@
 		"Direct Drive Standard"
 	],
 	"printer_model": "Flashforge AD5X",
-	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your zMod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
+	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your Z-Mod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
 	"printer_plugin_config_overrides": "",
-	"printer_settings_id": "AD5X Nopoop .4",
+	"printer_settings_id": "AD5X Nopoop .8",
 	"printer_structure": "undefine",
 	"printer_technology": "FFF",
-	"printer_variant": "0.4",
+	"printer_variant": "0.8",
 	"printhost_authorization_type": "key",
 	"printhost_ssl_ignore_revoke": "0",
 	"printing_by_object_gcode": "",
@@ -303,13 +303,13 @@
 		"18"
 	],
 	"retraction_length": [
-		"2"
+		"1.5"
 	],
 	"retraction_minimum_travel": [
-		"1"
+		"2"
 	],
 	"retraction_speed": [
-		"45"
+		"35"
 	],
 	"scan_first_layer": "0",
 	"single_extruder_multi_material": "1",
@@ -333,7 +333,7 @@
 	"use_3mf": "1",
 	"use_firmware_retraction": "0",
 	"use_relative_e_distances": "1",
-	"version": "2.3.1.10",
+	"version": "2.3.2.40",
 	"wait_for_temp_on_wipe_tower": "0",
 	"wipe": [
 		"1"

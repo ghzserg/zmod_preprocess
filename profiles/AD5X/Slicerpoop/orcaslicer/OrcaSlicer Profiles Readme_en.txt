@@ -8,7 +8,7 @@ Differences from stock AD5X profiles:
 - Fan speed-up time set to 1.5s
 - Fan kick-start time set to 0.5s
 - Fan minimum nonzero speed set to 10%
-- zMod start / end / layer change gcode in place
+- Z-Mod start / end / layer change gcode in place
 - Start gcode modified to automatically set correct USE_TRASH_ON_PRINT mode
 - Filament change gcode added
 - Purge in prime tower enabled

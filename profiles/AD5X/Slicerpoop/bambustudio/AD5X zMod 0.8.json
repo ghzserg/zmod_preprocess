@@ -148,7 +148,7 @@
     "min_layer_height": [
         "0.24"
     ],
-    "name": "AD5X zMod 0.8",
+    "name": "AD5X Z-Mod 0.8",
     "nozzle_diameter": [
         "0.8"
     ],
@@ -181,7 +181,7 @@
     ],
     "printer_model": "Creality K1",
     "printer_notes": "",
-    "printer_settings_id": "AD5X zMod 0.8",
+    "printer_settings_id": "AD5X Z-Mod 0.8",
     "printer_structure": "corexy",
     "printer_technology": "FFF",
     "printer_variant": "0.4",
