@@ -1,3 +1,12 @@
+> [!IMPORTANT]
+> **This preprocessing script is no longer needed** if you send files to the printer in **3MF format** with **OrcaSlicer 2.5.0 or newer**. The MD5 check is handled by the 3MF format, and object simplification for all Flashforge printers is built into OrcaSlicer itself. Use this script only if you still send plain G-code or use an older slicer version.
+
+> [!IMPORTANT]
+> **Этот скрипт препроцессинга больше не нужен**, если файлы отправляются на принтер в формате **3MF** из **OrcaSlicer 2.5.0 и новее**. MD5 обеспечивается форматом 3MF, а упрощение объектов для всех принтеров Flashforge уже встроено в OrcaSlicer. Скрипт нужен только при отправке обычного G-code или со старой версией слайсера.
+
+# Preprocessing files in the slicer
+1. Select and download the file for your architecture and operating system:
+... (остальной текст без изменений)
 # Preprocessing files in the slicer
 1. Select and download the file for your architecture and operating system:
 - [zmod_preprocess-windows-amd64.exe](https://github.com/ghzserg/zmod_preprocess/releases/latest/download/zmod_preprocess-windows-amd64.exe) - Windows
@@ -18,6 +27,18 @@ Here are the options for adding:
 - ```"/home/user/zmod_preprocess-darwin-amd64";```
 - ```"/home/user/zmod_preprocess-darwin-arm64";```
 - ```"/home/user/zmod_preprocess-linux-amd64";```
+
+## Simplifying object outlines
+
+The outline of every `EXCLUDE_OBJECT_DEFINE` is thinned out. To turn it off:
+
+- ```"/home/user/zmod_preprocess-linux-amd64" -no-simplify-objects;```
+- ```"/home/user/zmod-preprocess.py" -no-simplify-objects;```
+
+The slicer writes the full first-layer outline of every object. On a plate with many small parts this adds up to thousands of points, and parsing them stalls Klipper on the printer — the host event loop blocks and the board reports `Timer too close`.
+
+Points are dropped by Douglas-Peucker, tolerance in millimetres: `-simplify-objects=0.5`. Default is `0.2`, which keeps the part recognisable in the web interface; `-simplify-objects=0` replaces the outline with its bounding rectangle. The bounding box is preserved exactly at any tolerance, so KAMP and LINE_PURGE are unaffected.
+
 
 ## Использовались наработки
 - Igor Polunovskiy
@@ -44,4 +65,16 @@ Here are the options for adding:
 - ```"/home/user/zmod_preprocess-darwin-amd64";```
 - ```"/home/user/zmod_preprocess-darwin-arm64";```
 - ```"/home/user/zmod_preprocess-linux-amd64";```
+
+## Упрощение контуров объектов
+
+Контур каждого `EXCLUDE_OBJECT_DEFINE` прореживается. Чтобы отключить:
+
+- ```"/home/user/zmod_preprocess-linux-amd64" -no-simplify-objects;```
+- ```"/home/user/zmod-preprocess.py" -no-simplify-objects;```
+
+Слайсер пишет контур первого слоя целиком для каждого объекта. На плите из множества мелких деталей набираются тысячи точек, и их разбор подвешивает Klipper на принтере — цикл событий встаёт, плата отдаёт `Timer too close`.
+
+Точки отбрасываются методом Дугласа-Пекера, допуск задаётся в миллиметрах: `-simplify-objects=0.5`. По умолчанию `0.2` — деталь в вебморде остаётся узнаваемой; `-simplify-objects=0` заменяет контур габаритным прямоугольником. Габарит сохраняется точно при любом допуске, так что KAMP и LINE_PURGE не затрагиваются.
+
 
