@@ -7,38 +7,65 @@
 	"bed_exclude_area": [
 		"0x0"
 	],
+	"bed_exclude_volume_mode": "shared",
+	"bed_exclude_volumes": "",
 	"bed_mesh_max": "99999,99999",
 	"bed_mesh_min": "-99999,-99999",
 	"bed_mesh_probe_distance": "50,50",
 	"bed_temperature_formula": "by_first_filament",
 	"before_layer_change_gcode": ";BEFORE_LAYER_CHANGE\n;[layer_z]\nSET_PRINT_STATS_INFO CURRENT_LAYER={layer_num + 1} ",
+	"belt_frame_tilt_angle": "45",
+	"belt_frame_tilt_decouple": "0",
+	"belt_printer": "0",
+	"belt_printer_infinite_y": "1",
+	"belt_slice_rotation": "x",
+	"belt_slice_rotation_angle": "45",
+	"belt_support_floor_offset": "0",
 	"best_object_pos": "0.5,0.5",
+	"build_plate_tilt_x": "0",
+	"build_plate_tilt_y": "0",
 	"change_extrusion_role_gcode": "",
 	"change_filament_gcode": "{if toolchange_count > 1}\nSET_VELOCITY_LIMIT ACCEL=[travel_acceleration]\n{if !purge_in_prime_tower || wipe_tower_type != \"type2\" || print_sequence == \"by object\"}\nT[next_extruder]\n_GOTO_TRASH\n{if flush_length > 0}\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n_DISABLE_SENSOR\n; FLUSH_START\n{if flush_length_1 == 0}\nG1 E2 F{min(old_filament_e_feedrate, new_filament_e_feedrate) / 2}\nG1 E{flush_length + old_retract_length_toolchange - 2} F{min(old_filament_e_feedrate, new_filament_e_feedrate)}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{new_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{else}\nG1 E2 F{min(old_filament_e_feedrate, new_filament_e_feedrate) / 2}\nG1 E{flush_length_1 + old_retract_length_toolchange - 2} F{min(old_filament_e_feedrate, new_filament_e_feedrate)}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{new_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{if flush_length_2 > 0}\n_GOTO_TRASH\nG1 E2 F{new_filament_e_feedrate / 2}\nG1 E{flush_length_2 - 1} F{new_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{new_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{endif}\n{if flush_length_3 > 0}\n_GOTO_TRASH\nG1 E2 F{new_filament_e_feedrate / 2}\nG1 E{flush_length_3 - 1} F{new_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{new_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{endif}\n{if flush_length_4 > 0}\n_GOTO_TRASH\nG1 E2 F{new_filament_e_feedrate / 2}\nG1 E{flush_length_4 - 1} F{new_filament_e_feedrate}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\nG1 E-1 F{new_filament_e_feedrate / 2}\n_SBROS_TRASH\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{endif}\n{endif}\n{if 1 - new_retract_length_toolchange < -2}\nG1 E-2 F{new_filament_e_feedrate / 2}\nG1 E{1 - new_retract_length_toolchange + 2} F{new_filament_e_feedrate}\n{endif}\n{if 1 - new_retract_length_toolchange >= -2 and 1 - new_retract_length_toolchange < 0}\nG1 E{1 - new_retract_length_toolchange} F{new_filament_e_feedrate / 2}\n{endif}\n{if 1 - new_retract_length_toolchange > 0 and 1 - new_retract_length_toolchange <= 2}\nG1 E{1 - new_retract_length_toolchange} F{new_filament_e_feedrate / 2}\n{endif}\n{if 1 - new_retract_length_toolchange > 2}\nG1 E2 F{new_filament_e_feedrate / 2}\nG1 E{1 - new_retract_length_toolchange - 2} F{new_filament_e_feedrate}\n{endif}\n; FLUSH_END\n_ENABLE_SENSOR\n{else}\nSET_FAN_SPEED FAN=fanM106 SPEED=1\nG4 P4000\nM400\n_SBROS_TRASH\n{endif}\n{if layer_num < close_fan_the_first_x_layers[next_extruder]}\nSET_FAN_SPEED FAN=fanM106 SPEED=0\n{elsif layer_num >= full_fan_speed_layer[next_extruder] - 1}\nSET_FAN_SPEED FAN=fanM106 SPEED={ fan_min_speed[next_extruder] / 100}\n{else}\nSET_FAN_SPEED FAN=fanM106 SPEED={ fan_min_speed[next_extruder] * (layer_num - close_fan_the_first_x_layers[next_extruder] + 1) / (full_fan_speed_layer[next_extruder] - close_fan_the_first_x_layers[next_extruder]) / 100}\n{endif}\nG1 X{((x_after_toolchange + 22) % 264) - 22} Y{242 - ((242 - y_after_toolchange) % 264)} F18000\nG1 Z{z_after_toolchange}\n{else}\nT[next_extruder]\n{endif}\n{if layer_num == 0}\nSET_VELOCITY_LIMIT ACCEL=[initial_layer_acceleration]\n{else}\nSET_VELOCITY_LIMIT ACCEL=[default_acceleration]\n{endif}\n{else}\nT[next_extruder]\n{endif}",
+	"cooling_filter_enabled": "0",
 	"cooling_tube_length": "0",
 	"cooling_tube_retraction": "0",
 	"default_bed_type": "",
 	"default_filament_profile": [
-		"Flashforge Generic PLA"
+		"Generic PLA @Flashforge"
 	],
 	"default_nozzle_volume_type": [
 		"Standard"
 	],
-	"default_print_profile": "0.20mm Standard @Flashforge AD5M Pro 0.4 Nozzle",
+	"default_print_profile": "0.12mm Standard @Flashforge AD5M 0.25 Nozzle",
+	"deretract_speed_extruder_change": [
+		"0"
+	],
 	"deretraction_speed": [
 		"45"
 	],
 	"disable_m73": "0",
 	"emit_machine_limits_to_gcode": "1",
+	"enable_belt_purge_tower": "0",
 	"enable_filament_ramming": "0",
 	"enable_long_retraction_when_cut": "0",
 	"enable_power_loss_recovery": "printer_configuration",
+	"enable_pre_heating": "0",
 	"extra_loading_move": "0",
+	"extruder_bed_exclude_volumes": [
+		""
+	],
+	"extruder_clearance_dist_to_rod": "40",
 	"extruder_clearance_height_to_lid": "130",
 	"extruder_clearance_height_to_rod": "26",
 	"extruder_clearance_radius": "58",
 	"extruder_colour": [
 		"#FCE94F"
+	],
+	"extruder_max_nozzle_count": [
+		"1"
+	],
+	"extruder_nozzle_stats": [
+		"Standard#1"
 	],
 	"extruder_offset": [
 		"0x0"
@@ -53,31 +80,58 @@
 	"extruder_variant_list": [
 		"Direct Drive Standard"
 	],
+	"fan_direction": "undefine",
 	"fan_kickstart": "0.5",
 	"fan_speedup_overhangs": "0",
 	"fan_speedup_time": "1.5",
-	"file_start_gcode": "",
+	"farthest_point_timelapse": "0",
+	"file_start_gcode": "; estimated printing time (normal mode) = {print_time_day}d {print_time_hour}h {print_time_minute}m {print_time_sec}s",
 	"flashforge_serial_number": "",
 	"from": "User",
 	"gcode_flavor": "klipper",
+	"gcode_remap_x": "pos_x",
+	"gcode_remap_y": "pos_y",
+	"gcode_remap_z": "pos_z",
+	"gcode_skip_config_block": "0",
 	"grab_length": [
 		"0"
 	],
+	"group_algo_with_time": "0",
 	"head_wrap_detect_zone": [],
 	"high_current_on_filament_swap": "0",
 	"host_type": "octoprint",
-	"inherits": "Flashforge AD5X 0.4 nozzle",
+	"hotend_cooling_rate": [
+		"2"
+	],
+	"hotend_heating_rate": [
+		"2"
+	],
+	"imex_carriage_margin": "0",
+	"imex_firmware_managed_zones": "0",
+	"imex_gantry_count": "1",
+	"imex_mode_active_tools": [],
+	"imex_mode_gcodes": [],
+	"imex_mode_names": [],
+	"imex_nozzle_clearance_x": "30",
+	"imex_nozzle_clearance_y": "30",
+	"imex_tool_layout": "front-left",
+	"imex_tools_per_gantry": "2",
+	"imex_viz_theme": "standard",
+	"inherits": "Flashforge AD5X 0.25 nozzle",
 	"input_shaping_damp_x": "0.1",
 	"input_shaping_damp_y": "0.1",
 	"input_shaping_emit": "0",
 	"input_shaping_freq_x": "0",
 	"input_shaping_freq_y": "0",
 	"input_shaping_type": "Default",
+	"is_imex": "0",
 	"layer_change_gcode": ";AFTER_LAYER_CHANGE\n;[layer_z]",
 	"long_retractions_when_cut": [
 		"0"
 	],
+	"machine_bed_mass_Y": "0",
 	"machine_end_gcode": "END_PRINT",
+	"machine_hotend_change_time": "0",
 	"machine_load_filament_time": "66",
 	"machine_max_acceleration_e": [
 		"5000",
@@ -107,6 +161,7 @@
 		"500",
 		"500"
 	],
+	"machine_max_force_Y": "0",
 	"machine_max_jerk_e": [
 		"2.5",
 		"2.5"
@@ -124,9 +179,10 @@
 		"3"
 	],
 	"machine_max_junction_deviation": [
-		"0",
-		"0"
+		"0.01",
+		"0.01"
 	],
+	"machine_max_printed_mass": "0",
 	"machine_max_speed_e": [
 		"30",
 		"30"
@@ -152,30 +208,31 @@
 		"0"
 	],
 	"machine_pause_gcode": "PAUSE",
+	"machine_prepare_compensation_time": "260",
 	"machine_start_gcode": "RESPOND MSG=\"Pre-Processing purge mode results:\"\n{if purge_in_prime_tower && wipe_tower_type == \"type2\" && print_sequence == \"by layer\"}\nRESPOND MSG=\"Purge in prime tower option enabled. Using 'nopoop' mode.\"\nSAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=0\n{else}\n{if print_sequence == \"by layer\"}\nRESPOND MSG=\"Purge in prime tower option disabled. Using 'slicer-controlled poop' mode.\"\n{else}\nRESPOND MSG=\"Using 'slicer-controlled poop' mode due to print-by-object mode.\"\n{endif}\nSAVE_VARIABLE VARIABLE=use_trash_on_print VALUE=2\n{endif}\nSTART_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]\nSET_PRINT_STATS_INFO TOTAL_LAYER=[total_layer_count]",
 	"machine_tool_change_time": "0",
 	"machine_unload_filament_time": "0",
 	"manual_filament_change": "0",
 	"master_extruder_id": "1",
 	"max_layer_height": [
-		"0.28"
+		"0.14"
 	],
 	"max_resonance_avoidance_speed": "120",
 	"min_layer_height": [
 		"0.08"
 	],
 	"min_resonance_avoidance_speed": "70",
-	"name": "AD5X Nopoop .4",
+	"name": "AD5X Nopoop .25",
 	"nozzle_diameter": [
-		"0.4"
+		"0.25"
 	],
 	"nozzle_flush_dataset": [
 		"0"
 	],
-	"nozzle_height": "4",
+	"nozzle_height": "2.5",
 	"nozzle_hrc": "0",
 	"nozzle_type": [
-		"hardened_steel"
+		"stainless_steel"
 	],
 	"nozzle_volume": [
 		"144"
@@ -183,7 +240,7 @@
 	"parallel_printheads_bed_exclude_areas": [],
 	"parallel_printheads_count": "1",
 	"parking_pos_retraction": "0",
-	"part_cooling_fan_min_pwm": "0",
+	"part_cooling_fan_min_pwm": "10",
 	"pellet_modded_printer": "0",
 	"physical_extruder_map": [
 		"0"
@@ -205,15 +262,19 @@
 	],
 	"printer_model": "Flashforge AD5X",
 	"printer_notes": "Turn Multimaterial -> Purge in prime tower ON for Nopoop mode\nTurn Multimaterial -> Purge in prime tower OFF for Poop mode (slicer-controlled poop; will respect your flush volumes)\n\nAfter using poop mode with this profile make sure to set your zMod USE_TRASH_ON_PRINT setting back to 0 or 1 before printing GCode sliced without this profile.",
-	"printer_settings_id": "AD5X Nopoop .4",
+	"printer_plugin_config_overrides": "",
+	"printer_settings_id": "AD5X Nopoop .25",
 	"printer_structure": "undefine",
 	"printer_technology": "FFF",
-	"printer_variant": "0.4",
+	"printer_variant": "0.25",
 	"printhost_authorization_type": "key",
 	"printhost_ssl_ignore_revoke": "0",
 	"printing_by_object_gcode": "",
 	"purge_in_prime_tower": "1",
 	"resonance_avoidance": "0",
+	"retract_after_wipe": [
+		"0%"
+	],
 	"retract_before_wipe": [
 		"100%"
 	],
@@ -242,7 +303,7 @@
 		"18"
 	],
 	"retraction_length": [
-		"2"
+		"1"
 	],
 	"retraction_minimum_travel": [
 		"1"
@@ -251,10 +312,11 @@
 		"45"
 	],
 	"scan_first_layer": "0",
-	"silent_mode": "0",
 	"single_extruder_multi_material": "1",
 	"support_air_filtration": "1",
 	"support_chamber_temp_control": "1",
+	"support_cooling_filter": "0",
+	"support_fast_purge_mode": "0",
 	"support_multi_bed_types": "1",
 	"support_object_skip_flush": "0",
 	"support_parallel_printheads": "0",
@@ -268,10 +330,11 @@
 		"3"
 	],
 	"upward_compatible_machine": [],
-	"use_3mf": "0",
+	"use_3mf": "1",
 	"use_firmware_retraction": "0",
 	"use_relative_e_distances": "1",
-	"version": "2.3.1.10",
+	"version": "2.3.2.40",
+	"wait_for_temp_on_wipe_tower": "0",
 	"wipe": [
 		"1"
 	],
@@ -283,7 +346,7 @@
 	"wrapping_detection_layers": "20",
 	"wrapping_exclude_area": [],
 	"z_hop": [
-		"0.4"
+		"0.3"
 	],
 	"z_hop_types": [
 		"Normal Lift"
