@@ -111,6 +111,10 @@ def simplify_polygon(line, tolerance):
     if start < 0:
         return None
     start += len('POLYGON=')
+    # The Go json.Decoder skips whitespace before the value; do the same so
+    # both versions simplify 'POLYGON= [[...]]' identically.
+    while start < len(line) and line[start] in ' \t':
+        start += 1
 
     # The value is plain JSON, and raw_decode also reports where it ended - the
     # line carries the rest of the command after it. Anything that does not parse
@@ -153,7 +157,7 @@ parser.add_argument('-no-simplify-objects', '--no-simplify-objects',
                     help='keep the full outline')
 args = parser.parse_args()
 
-if args.tolerance < 0:
+if args.tolerance < 0 or not math.isfinite(args.tolerance):
     sys.stderr.write('Bad tolerance: %s\n' % args.tolerance)
     sys.exit(1)
 
@@ -179,13 +183,9 @@ highest_result_color = -1
 filament_color_line = ''
 filament_type_line = ''
 
-color_data_line = ''
-
 header_end_line = -1
-remove_existing_line = -1
 found_header_end_line = False
-found_existing_line = False
-old_color_data_line = -1
+existing_lines = []
 
 for line_index, line_raw in enumerate(content):
     if simplify and 'EXCLUDE_OBJECT_DEFINE' in line_raw:
@@ -197,8 +197,6 @@ for line_index, line_raw in enumerate(content):
     line = line_raw.strip().casefold()
     if not found_header_end_line:
         header_end_line += 1
-    if not found_existing_line:
-        remove_existing_line += 1
     if len(line) == 0:
         continue
     if line[0] == 't':
@@ -215,7 +213,7 @@ for line_index, line_raw in enumerate(content):
         if line.startswith('; filament_type ='):
             _, _, filament_type_line = line.partition('=')
         if line.startswith('; zmod_color_data ='):
-            found_existing_line = True
+            existing_lines.append(line_index)
         if line.startswith('; header_block_end'):
             found_header_end_line = True
 
@@ -246,10 +244,10 @@ if not found_header_end_line:
 
 content.insert(header_end_line, f"; zmod_color_data = {tool_indexes_string}|{filament_color_string}|{filament_type_string}\n")
 
-if found_existing_line:
-    if remove_existing_line > header_end_line: # Should never happen but just in case
-        remove_existing_line += 1
-    content.pop(remove_existing_line)
+# Drop every stale zmod_color_data line, duplicates from older runs included.
+# The insert above shifted indices at/after header_end_line by one.
+for idx in reversed(existing_lines):
+    content.pop(idx + 1 if idx >= header_end_line else idx)
 
 # MD5
 

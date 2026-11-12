@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 
 	tolerance := *toleranceFlag
-	if tolerance < 0 {
+	if tolerance < 0 || math.IsNaN(tolerance) || math.IsInf(tolerance, 0) {
 		fmt.Fprintf(os.Stderr, "Bad tolerance: %v\n", tolerance)
 		os.Exit(1)
 	}
@@ -70,9 +70,8 @@ func main() {
 	highestResultColor := -1
 	var filamentColorLine, filamentTypeLine string
 	headerEndLine := -1
-	removeExistingLine := -1
 	foundHeaderEndLine := false
-	foundExistingLine := false
+	var existingLines []int
 
 	// Парсим содержимое
 	for i, lineRaw := range lines {
@@ -87,9 +86,6 @@ func main() {
 
 		if !foundHeaderEndLine {
 			headerEndLine = i
-		}
-		if !foundExistingLine {
-			removeExistingLine = i
 		}
 
 		if line == "" {
@@ -132,7 +128,7 @@ func main() {
 				filamentTypeLine = strings.TrimSpace(parts[1])
 			}
 		} else if strings.HasPrefix(line, "; zmod_color_data =") {
-			foundExistingLine = true
+			existingLines = append(existingLines, i)
 		} else if strings.HasPrefix(line, "; header_block_end") {
 			foundHeaderEndLine = true
 		}
@@ -182,16 +178,17 @@ func main() {
 		headerEndLine = 0
 	}
 
-	// Вставляем новую строку перед header_block_end и только потом удаляем старую:
-	// сдвиг removeExistingLine рассчитан на уже произошедшую вставку. Удаление
-	// первым сдвигало header_block_end, новый zmod_color_data оказывался после
-	// него, а следующий прогон удалял соседнюю строку и плодил дубликаты.
+	// Вставляем новую строку перед header_block_end и только потом удаляем старые:
+	// сдвиг индексов рассчитан на уже произошедшую вставку.
 	lines = append(lines[:headerEndLine], append([]string{colorDataLine}, lines[headerEndLine:]...)...)
-	if foundExistingLine {
-		if removeExistingLine > headerEndLine {
-			removeExistingLine++
+	// Удаляем все старые zmod_color_data, включая дубликаты от прошлых прогонов.
+	// Вставка выше сдвинула индексы от headerEndLine и дальше на единицу.
+	for k := len(existingLines) - 1; k >= 0; k-- {
+		idx := existingLines[k]
+		if idx >= headerEndLine {
+			idx++
 		}
-		lines = append(lines[:removeExistingLine], lines[removeExistingLine+1:]...)
+		lines = append(lines[:idx], lines[idx+1:]...)
 	}
 
 	// Разделитель — \n (переводы строк нормализованы при чтении). Хвостовой перенос
@@ -227,6 +224,10 @@ func simplifyPolygon(line string, tolerance float64) (string, bool) {
 		return line, false
 	}
 	start += len("POLYGON=")
+	// Пропускаем пробелы перед значением, сохраняя их в выводе — как Python-версия.
+	for start < len(line) && (line[start] == ' ' || line[start] == '\t') {
+		start++
+	}
 
 	// Значение — обычный JSON, а декодер сам сообщает, где оно кончилось: дальше
 	// в строке идёт остаток команды. Всё, что не разобралось, оставляем как есть:

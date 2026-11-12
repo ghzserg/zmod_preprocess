@@ -14,29 +14,57 @@ TEMP_CONTENT=$(mktemp)
 FINAL_TEMP=$(mktemp)
 trap 'rm -f "$TEMP_CONTENT" "$FINAL_TEMP"' EXIT
 
-# 1. Убираем старые MD5/zmod-строки и нормализуем переводы строк (как Python/Go)
-grep -aviE '^; (MD5:|zmod_color_data =)' "$FILE_PATH" | tr -d '\r' > "$TEMP_CONTENT" || true
+# 1. Убираем MD5-строку (только первую, как Python/Go) и все старые zmod-строки;
+#    нормализуем переводы строк. awk вместо grep -v: grep не умеет "только первую".
+awk 'NR == 1 && tolower($0) ~ /^[ \t]*; md5/ { next }
+     tolower($0) ~ /^[ \t]*; zmod_color_data =/ { next }
+     { print }' "$FILE_PATH" | tr -d '\r' > "$TEMP_CONTENT"
 
-# 2. Номера инструментов в порядке первого появления (как в Python/Go)
+# 2. Номера инструментов в порядке первого появления (как в Python/Go).
+#    Разделитель — пробел, таб или ';'; знак допускается, как в Python/Go.
 TOOL_IDS=$(awk '{
     l = tolower($0); sub(/^[ \t]+/, "", l)
-    split(l, a, /[ ;]/); tok = a[1]
-    if (tok ~ /^t[0-9]+$/) { n = substr(tok, 2) + 0; if (!seen[n]++) out = out (out == "" ? "" : ",") n }
+    split(l, a, /[ \t;]/); tok = a[1]
+    if (tok ~ /^t[+-]?[0-9]+$/) { n = substr(tok, 2) + 0; if (!seen[n]++) out = out (out == "" ? "" : ",") n }
 } END { print out }' "$TEMP_CONTENT")
 [[ -z "$TOOL_IDS" ]] && TOOL_IDS="0"
+MAX_TOOL=$(printf '%s\n' "$TOOL_IDS" | tr ',' '\n' | sort -n | tail -n 1)
 
-# 3. Цвета и типы филамента: берём последнюю строку, нижний регистр, ';' -> ','
-FILAMENT_COLOURS=$( { grep -ai "^; filament_colour =" "$TEMP_CONTENT" || true; } | tail -n 1 | cut -d'=' -f2- | tr -d ' ' | tr ';' ',' | tr '[:upper:]' '[:lower:]')
-FILAMENT_TYPES=$( { grep -ai "^; filament_type =" "$TEMP_CONTENT" || true; } | tail -n 1 | cut -d'=' -f2- | tr -d ' ' | tr ';' ',' | tr '[:upper:]' '[:lower:]')
+# 3. Цвета и типы филамента: берём последнюю строку, нижний регистр, ';' -> ','.
+#    Пробелы убираем только по краям значения — внутри сохраняются, как в Python/Go.
+FILAMENT_COLOURS=$( { grep -aiE '^[[:space:]]*; filament_colour =' "$TEMP_CONTENT" || true; } | tail -n 1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr ';' ',' | tr '[:upper:]' '[:lower:]')
+FILAMENT_TYPES=$( { grep -aiE '^[[:space:]]*; filament_type =' "$TEMP_CONTENT" || true; } | tail -n 1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr ';' ',' | tr '[:upper:]' '[:lower:]')
+
+# Дополняем пустыми полями до числа инструментов (как Python/Go).
+pad_fields() {
+    printf '%s\n' "$1" | awk -v want="$((MAX_TOOL + 1))" -F',' '{
+        have = ($0 == "") ? 0 : NF
+        out = $0
+        if (have == 0) { for (i = 1; i < want; i++) out = out "," }
+        else { for (i = have; i < want; i++) out = out "," }
+        printf "%s", out
+    }'
+}
+FILAMENT_COLOURS=$(pad_fields "$FILAMENT_COLOURS")
+FILAMENT_TYPES=$(pad_fields "$FILAMENT_TYPES")
 
 ZMOD_LINE="; zmod_color_data = ${TOOL_IDS}|${FILAMENT_COLOURS}|${FILAMENT_TYPES}"
 
 # 4. Вставляем перед первым HEADER_BLOCK_END; если его нет — в начало файла.
 #    awk вместо sed 'i': sed 'i text' не работает в BSD/macOS sed.
-if grep -qai "^; header_block_end" "$TEMP_CONTENT"; then
-    awk -v line="$ZMOD_LINE" '!ins && tolower($0) ~ /^; header_block_end/ { print line; ins = 1 } { print }' "$TEMP_CONTENT" > "$FINAL_TEMP"
+#    Значение передаём через ENVIRON: awk -v интерпретирует escape-последовательности.
+#    Записи выводим без ORS — хвостовой перевод строки сохраняем как в исходнике.
+if grep -qaiE '^[[:space:]]*; header_block_end' "$TEMP_CONTENT"; then
+    ZMOD_LINE="$ZMOD_LINE" awk '{
+        if (NR > 1) printf "\n"
+        if (!ins && tolower($0) ~ /^[ \t]*; header_block_end/) { printf "%s\n", ENVIRON["ZMOD_LINE"]; ins = 1 }
+        printf "%s", $0
+    }' "$TEMP_CONTENT" > "$FINAL_TEMP"
 else
-    { printf '%s\n' "$ZMOD_LINE"; cat "$TEMP_CONTENT"; } > "$FINAL_TEMP"
+    ZMOD_LINE="$ZMOD_LINE" awk 'BEGIN { printf "%s", ENVIRON["ZMOD_LINE"] } { printf "\n%s", $0 }' "$TEMP_CONTENT" > "$FINAL_TEMP"
+fi
+if [[ -z "$(tail -c 1 "$FILE_PATH" | tr -d '\r\n')" ]]; then
+    printf '\n' >> "$FINAL_TEMP"
 fi
 
 # 5. MD5 от финальных байтов (разделитель \n, как в Python/Go — MD5 считается
