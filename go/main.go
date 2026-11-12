@@ -5,7 +5,6 @@
 package main
 
 import (
-	"bufio"
 	"crypto/md5"
 	"encoding/json"
 	"flag"
@@ -24,7 +23,7 @@ func main() {
 		"outline tolerance in mm; 0 leaves the bounding rectangle")
 	noSimplify := flag.Bool("no-simplify-objects", false, "keep the full outline")
 	flag.Usage = func() {
-		fmt.Fprintln(os.Stderr, "Usage: addColorAndMD5 [-simplify-objects=tolerance_mm] [-no-simplify-objects] <file_path>")
+		fmt.Fprintln(os.Stderr, "Usage: zmod_preprocess [-simplify-objects=tolerance_mm] [-no-simplify-objects] <file_path>")
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -41,22 +40,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Чтение файла построчно
-	var lines []string
-	file, err := os.Open(filePath)
+	// Читаем файл целиком. bufio.Scanner здесь нельзя: лимит строки у него 64 КБ,
+	// а EXCLUDE_OBJECT_DEFINE с контуром на десятки тысяч точек длиннее — и именно
+	// такие строки этот инструмент и должен упрощать.
+	data, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
 		os.Exit(1)
 	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
-		os.Exit(1)
+	// Нормализуем переводы строк так же, как readlines() в Python-версии.
+	content := strings.NewReplacer("\r\n", "\n", "\r", "\n").Replace(string(data))
+	trailingNewline := content == "" || strings.HasSuffix(content, "\n")
+	var lines []string
+	if content != "" {
+		lines = strings.Split(content, "\n")
+		if trailingNewline {
+			lines = lines[:len(lines)-1]
+		}
 	}
 
 	// Удаляем первую строку, если она содержит '; MD5' (case-insensitive)
@@ -66,6 +66,7 @@ func main() {
 
 	// Переменные для сбора данных
 	resultColors := make(map[int]bool)
+	var colorIndexes []int // порядок первого появления, как в Python-версии
 	highestResultColor := -1
 	var filamentColorLine, filamentTypeLine string
 	headerEndLine := -1
@@ -108,7 +109,10 @@ func main() {
 		    // Проверяем, что это действительно команда T с числом
 		    if len(toolCommand) > 1 && toolCommand[0] == 't' {
 		        if idx, err := strconv.Atoi(toolCommand[1:]); err == nil {
-		            resultColors[idx] = true
+		            if !resultColors[idx] {
+		                resultColors[idx] = true
+		                colorIndexes = append(colorIndexes, idx)
+		            }
 		            if idx > highestResultColor {
 		                highestResultColor = idx
 		            }
@@ -134,11 +138,8 @@ func main() {
 		}
 	}
 
-	// Формируем список уникальных индексов цветов
-	var colorIndexes []int
-	for idx := range resultColors {
-		colorIndexes = append(colorIndexes, idx)
-	}
+	// Индексы уже собраны в порядке появления: обход map давал случайный порядок
+	// от запуска к запуску, и MD5 одного и того же файла менялся без причины.
 	if len(colorIndexes) == 0 {
 		colorIndexes = []int{0}
 		highestResultColor = 0
@@ -181,7 +182,11 @@ func main() {
 		headerEndLine = 0
 	}
 
-	// Удаляем существующую строку, если найдена
+	// Вставляем новую строку перед header_block_end и только потом удаляем старую:
+	// сдвиг removeExistingLine рассчитан на уже произошедшую вставку. Удаление
+	// первым сдвигало header_block_end, новый zmod_color_data оказывался после
+	// него, а следующий прогон удалял соседнюю строку и плодил дубликаты.
+	lines = append(lines[:headerEndLine], append([]string{colorDataLine}, lines[headerEndLine:]...)...)
 	if foundExistingLine {
 		if removeExistingLine > headerEndLine {
 			removeExistingLine++
@@ -189,11 +194,12 @@ func main() {
 		lines = append(lines[:removeExistingLine], lines[removeExistingLine+1:]...)
 	}
 
-	// Вставляем новую строку перед header_block_end
-	lines = append(lines[:headerEndLine], append([]string{colorDataLine}, lines[headerEndLine:]...)...)
-
-	// Формируем окончательное содержимое с \r\n как разделителем (стандарт для G-code)
-	finalContent := strings.Join(lines, "\n") + "\n"
+	// Разделитель — \n (переводы строк нормализованы при чтении). Хвостовой перенос
+	// сохраняем только если он был в исходном файле — как в Python-версии.
+	finalContent := strings.Join(lines, "\n")
+	if trailingNewline {
+		finalContent += "\n"
+	}
 	finalContentBytes := []byte(finalContent)
 
 	// Вычисляем MD5

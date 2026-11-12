@@ -9,6 +9,8 @@ import argparse
 import math
 import hashlib
 import os
+import re
+from decimal import Decimal
 
 
 # Object outline simplification
@@ -17,13 +19,11 @@ def format_coord(value):
     # Go writes coordinates with strconv.FormatFloat(v, 'f', -1, 64): the shortest
     # form that round-trips, never exponential. repr() picks the same digits, but
     # keeps a trailing '.0' and falls back to an exponent on very small values.
-    text = repr(value)
-    if 'e' in text or 'E' in text:
-        text = ('%.17f' % value).rstrip('0').rstrip('.')
-        if text in ('', '-'):
-            text = '-0' if math.copysign(1, value) < 0 else '0'
-    elif text.endswith('.0'):
-        text = text[:-2]
+    # Decimal(repr(v)) keeps exactly those digits; '%.17f' would round tiny
+    # values (1.2345678901234567e-05 -> 0.00001234567890123) and lose precision.
+    text = format(Decimal(repr(value)), 'f')
+    if '.' in text:
+        text = text.rstrip('0').rstrip('.')
     return text
 
 
@@ -162,14 +162,16 @@ simplify = not args.no_simplify
 tolerance = args.tolerance
 
 if not file_path:
-    sys.exit()
+    parser.print_usage(sys.stderr)
+    sys.exit(1)
 
 # Color info
 
-with open(file_path, 'r', encoding='utf-8') as f:
+# surrogateescape keeps non-UTF8 bytes (slicer comments, author names) intact.
+with open(file_path, 'r', encoding='utf-8', errors='surrogateescape') as f:
     content = f.readlines()
 
-if content[0].strip().casefold().startswith('; md5'):
+if content and content[0].strip().casefold().startswith('; md5'):
     content.pop(0)
 
 result_colors = []
@@ -201,13 +203,12 @@ for line_index, line_raw in enumerate(content):
         continue
     if line[0] == 't':
         main_part = line.split(';', 1)[0].split(' ', 1)[0].strip()
-        try:
+        # int() also accepts '1_0' and non-ASCII digits; Go's Atoi does not.
+        if re.fullmatch(r'[+-]?[0-9]+', main_part[1:]):
             index = int(main_part[1:])
             if index not in result_colors:
                 result_colors += [index]
             highest_result_color = max(highest_result_color, index)
-        except:
-            pass
     if line[0] == ';':
         if line.startswith('; filament_colour ='):
             _, _, filament_color_line = line.partition('=')
@@ -243,7 +244,7 @@ filament_type_string = ','.join(filament_types)
 if not found_header_end_line:
     header_end_line = 0
 
-content.insert(header_end_line, f"; zmod_color_data = {tool_indexes_string}|{filament_color_string}|{filament_type_string}\r\n")
+content.insert(header_end_line, f"; zmod_color_data = {tool_indexes_string}|{filament_color_string}|{filament_type_string}\n")
 
 if found_existing_line:
     if remove_existing_line > header_end_line: # Should never happen but just in case
@@ -252,11 +253,11 @@ if found_existing_line:
 
 # MD5
 
-content = "".join(content).encode('utf-8')
+content = "".join(content).encode('utf-8', errors='surrogateescape')
 
 md5_hash = hashlib.md5(content).hexdigest()
 
-md5_line = b'; MD5:' + md5_hash.encode('ascii') + b'\r\n'
+md5_line = b'; MD5:' + md5_hash.encode('ascii') + b'\n'
 
 new_content = md5_line + content
 
