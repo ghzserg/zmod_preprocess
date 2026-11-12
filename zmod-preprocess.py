@@ -8,7 +8,6 @@ import json
 import argparse
 import math
 import hashlib
-import os
 import re
 from decimal import Decimal
 
@@ -172,8 +171,12 @@ if not file_path:
 # Color info
 
 # surrogateescape keeps non-UTF8 bytes (slicer comments, author names) intact.
-with open(file_path, 'r', encoding='utf-8', errors='surrogateescape') as f:
-    content = f.readlines()
+try:
+    with open(file_path, 'r', encoding='utf-8', errors='surrogateescape') as f:
+        content = f.readlines()
+except OSError as e:
+    sys.stderr.write('Error reading file: %s\n' % e)
+    sys.exit(1)
 
 if content and content[0].strip().casefold().startswith('; md5'):
     content.pop(0)
@@ -259,5 +262,9 @@ md5_line = b'; MD5:' + md5_hash.encode('ascii') + b'\n'
 
 new_content = md5_line + content
 
-with open(file_path, 'wb') as f:
-    f.write(new_content)
+try:
+    with open(file_path, 'wb') as f:
+        f.write(new_content)
+except OSError as e:
+    sys.stderr.write('Error writing file: %s\n' % e)
+    sys.exit(1)

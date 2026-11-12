@@ -18,7 +18,7 @@ import (
 
 func main() {
 	// Путь к файлу остаётся позиционным, ключи необязательные. Слайсер
-	// дописывает путь последним, поэтому ключи всегда идут до него.
+	// дописывает путь последним; ключи после пути тоже принимаются — как в Python.
 	toleranceFlag := flag.Float64("simplify-objects", 0.2,
 		"outline tolerance in mm; 0 leaves the bounding rectangle")
 	noSimplify := flag.Bool("no-simplify-objects", false, "keep the full outline")
@@ -26,7 +26,28 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Usage: zmod_preprocess [-simplify-objects=tolerance_mm] [-no-simplify-objects] <file_path>")
 		flag.PrintDefaults()
 	}
-	flag.Parse()
+	// argparse в Python-версии принимает ключи и после пути. Поддержим оба
+	// порядка: переставим ключи перед позиционными аргументами.
+	var flagsFirst, positional []string
+	raw := os.Args[1:]
+	for i := 0; i < len(raw); i++ {
+		a := raw[i]
+		if len(a) > 1 && a[0] == '-' {
+			flagsFirst = append(flagsFirst, a)
+			// Значение -simplify-objects может идти отдельным аргументом.
+			if (a == "-simplify-objects" || a == "--simplify-objects") && i+1 < len(raw) {
+				i++
+				flagsFirst = append(flagsFirst, raw[i])
+			}
+		} else {
+			positional = append(positional, a)
+		}
+	}
+	flag.CommandLine.Parse(append(flagsFirst, positional...))
+	if flag.NArg() > 1 {
+		flag.Usage()
+		os.Exit(2)
+	}
 
 	tolerance := *toleranceFlag
 	if tolerance < 0 || math.IsNaN(tolerance) || math.IsInf(tolerance, 0) {

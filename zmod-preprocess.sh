@@ -3,11 +3,66 @@
 # EXCLUDE_OBJECT_DEFINE (для этого используйте Python- или Go-версию).
 set -u
 
-FILE_PATH="${1:-}"
+# Ключи принимаются в любом месте аргументов (как в Python/Go). Упрощение
+# контуров shell-версия не делает: -no-simplify-objects — no-op,
+# -simplify-objects — предупреждение; значение проверяется как в Python/Go.
+USAGE="Usage: $0 [-simplify-objects=tolerance_mm] [-no-simplify-objects] <gcode_file>"
+FILE_PATH=""
+TOL=""
+TOL_SET=0
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -no-simplify-objects|--no-simplify-objects) ;;
+        -simplify-objects|--simplify-objects)
+            if [[ $# -lt 2 ]]; then
+                echo "Error: -simplify-objects expects a value" >&2
+                exit 2
+            fi
+            shift
+            TOL="$1"; TOL_SET=1
+            ;;
+        -simplify-objects=*|--simplify-objects=*)
+            TOL="${1#*=}"; TOL_SET=1
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            exit 2
+            ;;
+        *)
+            if [[ -n "$FILE_PATH" ]]; then
+                echo "$USAGE" >&2
+                exit 2
+            fi
+            FILE_PATH="$1"
+            ;;
+    esac
+    shift
+done
 
 if [[ -z "$FILE_PATH" || ! -f "$FILE_PATH" ]]; then
-    echo "Usage: $0 <gcode_file>" >&2
+    echo "$USAGE" >&2
     exit 1
+fi
+
+if [[ $TOL_SET -eq 1 ]]; then
+    verdict=$(awk -v t="$TOL" 'BEGIN {
+        l = tolower(t)
+        if (l ~ /^[+-]?(nan|inf|infinity)$/) { print "bad"; exit }
+        if (t !~ /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)([eE][+-]?[0-9]+)?$/) { print "invalid"; exit }
+        if (t + 0 < 0) { print "bad"; exit }
+        print "ok"
+    }')
+    case "$verdict" in
+        bad)
+            echo "Bad tolerance: $TOL" >&2
+            exit 1
+            ;;
+        invalid)
+            echo "Error: invalid -simplify-objects value: '$TOL'" >&2
+            exit 2
+            ;;
+    esac
+    echo "Warning: outline simplification is not supported by the shell version; use Python or Go" >&2
 fi
 
 TEMP_CONTENT=$(mktemp)
